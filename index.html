@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eindeloze Melding</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        #status {
+            font-size: 1.5em;
+            color: #333;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="status">
+        <p>Wachten op interactie...</p>
+        <button id="stopButton">Stop de Meldingen</button>
+    </div>
+
+    <script>
+        // Variabele om de interval te beheren, zodat we het kunnen stoppen
+        let intervalId;
+        let meldingenActief = true; // Om bij te houden of we de meldingen moeten laten zien
+
+        function toonMeldingEnVerwerk() {
+            if (!meldingenActief) {
+                return; // Als meldingen zijn gestopt, doe niets meer
+            }
+
+            // De confirm() functie toont een dialoogvenster met OK en Cancel knoppen.
+            // Het retourneert true als OK wordt geklikt, false als Cancel wordt geklikt.
+            const wilDoorgaan = confirm("Wil je doorgaan?");
+
+            const statusElement = document.getElementById('status');
+
+            if (wilDoorgaan) {
+                // --- ACTIES ALS GEBRUIKER ACCEPTEERT ---
+                statusElement.innerHTML = "<p>" + new Date().toLocaleTimeString() + ": Gebruiker heeft geaccepteerd. Hier is de tekst 'iets'.</p>";
+                // Hier kun je meer complexere acties toevoegen als dat nodig is.
+                // Bijvoorbeeld, als je wilt dat het bericht langer blijft staan voordat het volgende komt,
+                // kun je een timeout gebruiken om de status weer te resetten.
+                setTimeout(() => {
+                    if (meldingenActief) {
+                        statusElement.innerHTML = "<p>Wachten op volgende interactie...</p>";
+                    }
+                }, 2000); // Reset bericht na 2 seconden
+            } else {
+                // --- ACTIES ALS GEBRUIKER NIET ACCEPTEERT ---
+                statusElement.innerHTML = "<p>" + new Date().toLocaleTimeString() + ": Gebruiker heeft niet geaccepteerd. De lus blijft draaien.</p>";
+                // Als je wilt dat de lus stopt als de gebruiker "Cancel" klikt, uncomment de volgende lijn:
+                // stopMeldingen();
+                setTimeout(() => {
+                    if (meldingenActief) {
+                        statusElement.innerHTML = "<p>Wachten op volgende interactie...</p>";
+                    }
+                }, 2000); // Reset bericht na 2 seconden
+            }
+        }
+
+        function stopMeldingen() {
+            meldingenActief = false; // Zet de vlag op false
+            clearInterval(intervalId); // Stop de herhalende functie
+            document.getElementById('status').innerHTML = "<p>Meldingen zijn gestopt.</p>";
+            document.getElementById('stopButton').style.display = 'none'; // Verberg de stopknop
+            console.log("Meldingen zijn gestopt.");
+        }
+
+        // --- START DE HERHALENDE FUNCTIE ---
+        // We willen een "pauze" tussen de meldingen, net als bij time.sleep().
+        // Hier gebruiken we setInterval().
+        // De tijd wordt hier in milliseconden opgegeven (1000 ms = 1 seconde).
+        const pauzeTijdMS = 3000; // Pas deze waarde aan: 3000ms = 3 seconden pauze
+
+        // Initialiseer de eerste melding direct bij het laden van de pagina
+        toonMeldingEnVerwerk();
+
+        // Stel de interval in om de functie elke 'pauzeTijdMS' opnieuw uit te voeren
+        // We wachten de pauzetijd *na* de vorige melding, vergelijkbaar met time.sleep()
+        intervalId = setInterval(toonMeldingEnVerwerk, pauzeTijdMS);
+
+        // Voeg een event listener toe aan de stopknop
+        document.getElementById('stopButton').addEventListener('click', stopMeldingen);
+
+        // Optioneel: Als je wilt dat de meldingen stoppen bij het sluiten van de browser tab,
+        // kun je dit toevoegen. Let op: dit werkt niet altijd betrouwbaar bij refresh.
+        // window.addEventListener('beforeunload', function(e) {
+        //     if (meldingenActief) {
+        //         // Een standaard bericht kan worden getoond, maar de tekst is beperkt.
+        //         e.preventDefault(); // Standaard voor de meeste browsers
+        //         e.returnValue = 'Weet je zeker dat je de pagina wilt verlaten? De meldingen stoppen.';
+        //     }
+        // });
+
+    </script>
+
+</body>
+</html>
 
