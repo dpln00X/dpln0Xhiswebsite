@@ -1,49 +1,56 @@
 import tkinter as tk
 from tkinter import messagebox
-import time # Gebruikt om even te wachten zonder de lus te blokkeren
+import time # Nodig voor time.sleep()
 
-def toon_melding_en_ga_door():
+def toon_melding_en_verwerk_antwoord():
     """
-    Toont een melding en verwerkt de gebruikerstoestemming.
+    Toont een 'Wil je doorgaan?' bericht met Yes/No opties.
+    Retourneert True als de gebruiker op 'Ja' klikt, anders False.
     """
-    # Met messagebox.askyesno krijg je een popup met Ja/Nee knoppen.
-    # De functie retourneert True als de gebruiker op 'Ja' klikt.
+    # Deze messagebox.askyesno functie blokkeert de uitvoering tot de gebruiker een keuze maakt.
     antwoord = messagebox.askyesno("Bevestiging", "Wil je doorgaan?")
-
-    if antwoord:
-        print("Gebruiker heeft gekozen om door te gaan.")
-        # Hier kun je de tekst "iets" tonen, bijvoorbeeld in een label of door het te printen.
-        # We printen het hier om het simpel te houden en de lus niet te blokkeren.
-        print("Dit is de tekst 'iets' die getoond wordt na acceptatie.")
-    else:
-        print("Gebruiker heeft gekozen om niet door te gaan.")
-        # Als je hier de lus wilt stoppen, kun je dat hier doen.
-        # Maar de vraag was om de while(true) erin te houden zonder pauze,
-        # dus we laten de lus gewoon doorlopen en printen een bericht.
-        print("De lus blijft draaien, ook al heb je niet geaccepteerd.")
+    return antwoord
 
 # --- Hoofdprogramma ---
-print("Start van het programma. De lus zal eindeloos draaien.")
+if __name__ == "__main__":
+    print("Programma gestart. De melding zal periodiek verschijnen.")
+    print("Druk op Ctrl+C in de terminal om het programma te stoppen.")
 
-# Initialiseer tkinter root window (dit is nodig voor messagebox, ook al tonen we het window niet expliciet)
-root = tk.Tk()
-root.withdraw() # Verberg het hoofdvenster van tkinter
+    # Initialiseer tkinter root window. Dit is nodig voor messagebox,
+    # ook al tonen we het hoofdvenster zelf niet.
+    root = tk.Tk()
+    root.withdraw() # Verberg het lege hoofdvenster
 
-# De eindeloze lus
-while True:
-    # Roep de functie aan die de melding toont en de input verwerkt.
-    toon_melding_en_ga_door()
+    # De eindeloze lus
+    while True:
+        # Roep de functie aan die de melding toont en het antwoord teruggeeft
+        wil_doorgaan = toon_melding_en_verwerk_antwoord()
 
-    # Een korte pauze om te voorkomen dat de CPU volledig wordt belast.
-    # Dit is GEEN 'pauze' in de zin van de lus stoppen,
-    # maar een korte adempauze voor het systeem.
-    # Zonder deze sleep zou de lus extreem veel CPU-gebruik kunnen veroorzaken.
-    time.sleep(0.1)
+        if wil_doorgaan:
+            # --- ACTIES ALS GEBRUIKER ACCEPTEERT ---
+            # Hier komt de tekst die je wilt tonen of de acties die je wilt uitvoeren.
+            # Ik gebruik print() hier, omdat dit geen interactie vereist die de lus blokkeert.
+            print(f"{time.strftime('%H:%M:%S')} - Gebruiker heeft geaccepteerd. Hier is de tekst 'iets'.")
+            # Je kunt hier andere Python commando's toevoegen die uitgevoerd moeten worden.
+            # Bijvoorbeeld:
+            # print("Voer hier je verdere logica in...")
+            # roep_andere_functie_aan()
+        else:
+            # --- ACTIES ALS GEBRUIKER NIET ACCEPTEERT (OPTIONEEL) ---
+            # Als je wilt dat er iets gebeurt als de gebruiker 'Nee' klikt, voeg dat hier toe.
+            # Anders kan deze 'else' blok ook weggelaten worden.
+            print(f"{time.strftime('%H:%M:%S')} - Gebruiker heeft niet geaccepteerd. De lus blijft draaien.")
+            # Optioneel: als je de lus toch wilt stoppen als de gebruiker 'Nee' klikt,
+            # kun je hier 'break' gebruiken, maar dat is tegen de vraag "zonder dat hij uit de pauze komt".
+            # break
 
-    # Opmerking: De 'messagebox.askyesno' functie blokkeert wel de *uitvoering*
-    # van de code op dat moment totdat de gebruiker een keuze maakt.
-    # Echter, de 'while True' lus zelf wordt niet 'uitgezet' of gepauzeerd.
-    # Zodra de gebruiker een keuze maakt, gaat de code verder met de volgende iteratie
-    # van de while-lus.
+        # Een korte pauze om te voorkomen dat de CPU volledig wordt belast.
+        # Pas deze waarde aan (in seconden) naar wens.
+        # Bijvoorbeeld 0.5 voor een halve seconde, 2 voor twee seconden.
+        # Een waarde tussen 0.1 en 2 is meestal goed.
+        tijd_pauze = 1 # Stel hier de gewenste pauzetijd in seconden in.
+        time.sleep(tijd_pauze)
 
-print("Dit bericht zal nooit worden bereikt, tenzij de code handmatig wordt onderbroken.")
+    # Dit bericht zal nooit bereikt worden tenzij de lus wordt onderbroken (bv. met Ctrl+C)
+    # Het tkinter root window wordt ook pas gesloten als het programma eindigt.
+    # root.destroy() # Kan nodig zijn als je specifieke cleanup wilt doen.
